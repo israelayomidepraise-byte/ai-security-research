@@ -63,3 +63,33 @@ def propose_refund(proposal: RefundProposal):
             _audit_events.pop(0)
 
     return event
+
+def record_policy_decision(
+    proposal: RefundProposal,
+    customer_id: str,
+    policy: dict
+):
+    """Record a policy decision without executing a refund."""
+
+    event = {
+        "event_id": str(uuid4()),
+        "timestamp": datetime.now(
+            timezone.utc
+        ).isoformat(),
+        "source": "authenticated_tool_dispatch",
+        "action": "refund",
+        "customer_id": customer_id,
+        "order_id": proposal.order_id,
+        "amount_cents": proposal.amount_cents,
+        "decision": policy["decision"],
+        "reason": policy["reason"],
+        "executed": False
+    }
+
+    with _audit_lock:
+        _audit_events.append(event)
+
+        if len(_audit_events) > 1000:
+            _audit_events.pop(0)
+
+    return event

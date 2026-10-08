@@ -172,3 +172,12 @@ def evaluate_refund_request(
         order_id=request.order_id,
         amount_cents=request.amount_cents
     )
+
+from app.secure_dispatch import build_secure_dispatch_router
+
+app.include_router(
+    build_secure_dispatch_router(
+        orders,
+        get_authenticated_customer
+    )
+)
