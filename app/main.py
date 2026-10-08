@@ -146,3 +146,29 @@ app.include_router(agent_audit_router)
 from app.local_agent import router as local_agent_router
 
 app.include_router(local_agent_router)
+
+
+from app.refund_policy import evaluate_refund_policy
+
+
+class RefundEvaluationRequest(BaseModel):
+    order_id: str
+    amount_cents: int = Field(gt=0)
+
+
+@app.post(
+    "/lab/policy/evaluate",
+    tags=["Security Policy"]
+)
+def evaluate_refund_request(
+    request: RefundEvaluationRequest,
+    customer_id: str = Depends(
+        get_authenticated_customer
+    )
+):
+    return evaluate_refund_policy(
+        orders=orders,
+        authenticated_customer_id=customer_id,
+        order_id=request.order_id,
+        amount_cents=request.amount_cents
+    )
