@@ -1,0 +1,19 @@
+{
+  "test_type": "local_api_comparison",
+  "live_model_used": false,
+  "real_payments_executed": false,
+  "vulnerable": {
+    "http_status": 200,
+    "simulated_refund_state_changed": true
+  },
+  "secure_without_auth": {
+    "http_status": 401,
+    "simulated_refund_state_changed": false
+  },
+  "secure_with_auth": {
+    "http_status": 200,
+    "decision": "would_allow",
+    "executed": false,
+    "simulated_refund_state_changed": false
+  }
+}

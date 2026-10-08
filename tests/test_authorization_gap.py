@@ -5,7 +5,10 @@ from app.main import app, orders
 client = TestClient(app)
 
 
-def test_refund_possible_without_authentication():
+
+def test_refund_possible_without_authentication(monkeypatch):
+    monkeypatch.setenv("ENABLE_VULNERABLE_LAB", "1")
+
     # This is a deliberately vulnerable lab.
     # No login session or authentication token is provided.
 

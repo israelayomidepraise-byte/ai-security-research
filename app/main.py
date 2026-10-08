@@ -1,3 +1,4 @@
+import os
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
@@ -38,11 +39,23 @@ def home():
 
 @app.get("/orders")
 def get_orders():
+    if os.getenv("ENABLE_VULNERABLE_LAB") != "1":
+        raise HTTPException(
+            status_code=404,
+            detail="Not found"
+        )
+
     return orders
 
 
 @app.post("/refunds")
 def process_refund(request: RefundRequest):
+    if os.getenv("ENABLE_VULNERABLE_LAB") != "1":
+        raise HTTPException(
+            status_code=404,
+            detail="Not found"
+        )
+
     order = orders.get(request.order_id)
 
     if order is None:
@@ -177,6 +190,15 @@ from app.secure_dispatch import build_secure_dispatch_router
 
 app.include_router(
     build_secure_dispatch_router(
+        orders,
+        get_authenticated_customer
+    )
+)
+
+from app.secure_agent_chat import build_secure_chat_router
+
+app.include_router(
+    build_secure_chat_router(
         orders,
         get_authenticated_customer
     )

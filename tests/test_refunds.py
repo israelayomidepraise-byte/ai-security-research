@@ -7,7 +7,9 @@ client = TestClient(app)
 
 
 @pytest.fixture(autouse=True)
-def reset_test_orders():
+def reset_test_orders(monkeypatch):
+    monkeypatch.setenv("ENABLE_VULNERABLE_LAB", "1")
+    
     # Keep each test independent.
     for order in orders.values():
         order["refunded"] = False
