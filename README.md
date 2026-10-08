@@ -57,7 +57,7 @@ The original `/refunds` endpoint deliberately demonstrates insecure authenticati
 
 It accepts a customer identifier supplied in the request without independently authenticating the caller.
 
-This endpoint remains available for controlled, local security experiments.
+This endpoint is disabled by default. It can be enabled explicitly for controlled local experiments by setting ENABLE_VULNERABLE_LAB=1. It must not be exposed publicly.
 
 ### 2. Protected Refund Workflow
 
@@ -183,7 +183,7 @@ These results support the specific behaviors tested and should not be interprete
 The application is a research prototype, not a production payment system.
 
 - No real customer identities or financial transactions are involved.
-- The original refund API remains deliberately insecure.
+- The original refund API remains intentionally insecure but is disabled by default.
 - Test-token authentication is not suitable for production.
 - The human approval workflow is represented as a policy decision rather than an operational approval system.
 - Audit records are not yet persistent.
