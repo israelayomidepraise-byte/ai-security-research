@@ -137,3 +137,8 @@ def protected_refund(
         "customer_id": customer_id,
         "amount_cents": request.amount_cents
     }
+
+
+from app.agent_audit import router as agent_audit_router
+
+app.include_router(agent_audit_router)
