@@ -142,3 +142,7 @@ def protected_refund(
 from app.agent_audit import router as agent_audit_router
 
 app.include_router(agent_audit_router)
+
+from app.local_agent import router as local_agent_router
+
+app.include_router(local_agent_router)
